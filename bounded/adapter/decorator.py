@@ -1,7 +1,7 @@
 from types import FunctionType
 from typing import Type, Iterable
 
-from bounded.exception import AnnotationMissing
+from bounded.exception import AnnotationError
 
 
 def Adapter(cls: Type):
@@ -15,7 +15,7 @@ def Adapter(cls: Type):
 def _validate_abstract_method(method: FunctionType):
     if _is_abstract_method(method):
         if not method.__annotations__:
-            raise AnnotationMissing()
+            raise AnnotationError()
 
 
 def _is_abstract_method(method: FunctionType) -> bool:

@@ -3,10 +3,10 @@ from abc import ABC, abstractmethod
 from pytest import raises
 
 from bounded import Adapter
-from bounded.exception import AnnotationMissing
+from bounded.exception import AnnotationError
 
 
-def test_should_not_raise_AnnotationMissing_on_normal_method():
+def test_should_not_raise_AnnotationError_on_normal_method():
 
     @Adapter
     class MyAdapter(ABC):
@@ -15,8 +15,8 @@ def test_should_not_raise_AnnotationMissing_on_normal_method():
             pass
 
 
-def test_should_raise_AnnotationMissing_when_creating_adapter_abstract_method_without_return_type():
-    with raises(AnnotationMissing):
+def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_without_return_type():
+    with raises(AnnotationError):
 
         @Adapter
         class MyAdapter(ABC):

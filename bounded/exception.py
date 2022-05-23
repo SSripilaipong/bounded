@@ -1,2 +1,2 @@
-class AnnotationMissing(Exception):
+class AnnotationError(Exception):
     pass
