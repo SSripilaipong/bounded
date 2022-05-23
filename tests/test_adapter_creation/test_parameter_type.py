@@ -28,3 +28,16 @@ def test_should_raise_AnnotationError_when_abstract_method_parameter_a_of_my_met
                 pass
 
     assert str(ex.value) == "The annotation of parameter 'a' in method 'my_method()' must be a type"
+
+
+def test_should_raise_AnnotationError_when_abstract_method_parameter_b_of_anothor_method_with_annotation_that_is_not_a_type():
+    with raises(AnnotationError) as ex:
+
+        @Adapter
+        class MyAdapter(ABC):
+
+            @abstractmethod
+            def another_method(self, b: 1234) -> int:
+                pass
+
+    assert str(ex.value) == "The annotation of parameter 'b' in method 'another_method()' must be a type"
