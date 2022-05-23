@@ -7,12 +7,12 @@ from typing import Type, Iterable
 from bounded.exception import AnnotationError
 
 
-EMPTY = Signature.empty
+_EMPTY = Signature.empty
 
 
 def Adapter(cls: Type):
     if not issubclass(cls, ABC):
-        raise TypeError(ERROR_ABC_ONLY)
+        raise TypeError(_ERROR_ABC_ONLY)
 
     attrs = (getattr(cls, name) for name in dir(cls))
     methods: Iterable[FunctionType] = filter(callable, attrs)
@@ -41,7 +41,7 @@ def _validate_abstract_method_parameter_type(signature: Signature):
 
 def _validate_abstract_method_parameter(param):
     annotation = param.annotation
-    if annotation is EMPTY:
+    if annotation is _EMPTY:
         raise AnnotationError()
     if not isinstance(annotation, type):
         raise AnnotationError(_ERROR_PARAM_ANNOTATION_NOT_TYPE)
@@ -49,7 +49,7 @@ def _validate_abstract_method_parameter(param):
 
 def _validate_abstract_method_return_type(signature: Signature):
     return_annotation = signature.return_annotation
-    if return_annotation is EMPTY:
+    if return_annotation is _EMPTY:
         raise AnnotationError()
     if not isinstance(return_annotation, type):
         raise AnnotationError()
@@ -59,5 +59,5 @@ def _is_abstract_method(method: FunctionType) -> bool:
     return getattr(method, "__isabstractmethod__", False)
 
 
-ERROR_ABC_ONLY = "@Adapter only applies to abstract classes (inherited from ABC)"
+_ERROR_ABC_ONLY = "@Adapter only applies to abstract classes (inherited from ABC)"
 _ERROR_PARAM_ANNOTATION_NOT_TYPE = "The annotation of parameter 'a' in method 'my_method()' must be a type"
