@@ -1,8 +1,12 @@
 import inspect
+from inspect import Signature
 from types import FunctionType
 from typing import Type, Iterable
 
 from bounded.exception import AnnotationError
+
+
+EMPTY = Signature.empty
 
 
 def Adapter(cls: Type):
@@ -19,20 +23,22 @@ def _validate_method(method: FunctionType):
 
 
 def _validate_abstract_method(method: FunctionType):
-    _validate_abstract_method_return_type(method)
-    _validate_abstract_method_parameter_type(method)
+    signature = inspect.signature(method)
+
+    _validate_abstract_method_return_type(signature)
+    _validate_abstract_method_parameter_type(signature)
 
 
-def _validate_abstract_method_parameter_type(method):
-    parameters = list(inspect.signature(method).parameters.items())
+def _validate_abstract_method_parameter_type(signature: Signature):
+    parameters = list(signature.parameters.items())
     for name, param in parameters[1:]:
-        if param.annotation is inspect.Signature.empty:
+        if param.annotation is EMPTY:
             raise AnnotationError()
 
 
-def _validate_abstract_method_return_type(method):
-    return_annotation = method.__annotations__.get("return", None)
-    if not return_annotation:
+def _validate_abstract_method_return_type(signature: Signature):
+    return_annotation = signature.return_annotation
+    if return_annotation is EMPTY:
         raise AnnotationError()
     if not isinstance(return_annotation, type):
         raise AnnotationError()
