@@ -28,6 +28,19 @@ def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_my_m
     assert str(ex.value) == "Abstract method 'my_method()' must have return type annotation"
 
 
+def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_another_method_without_return_type():
+    with raises(AnnotationError) as ex:
+
+        @Adapter
+        class MyAdapter(ABC):
+
+            @abstractmethod
+            def another_method(self):
+                pass
+
+    assert str(ex.value) == "Abstract method 'another_method()' must have return type annotation"
+
+
 def test_should_not_raise_error_when_creating_adapter_abstract_method_with_return_type_and_no_parameters():
 
     @Adapter
