@@ -24,3 +24,13 @@ def test_should_raise_AnnotationMissing_when_creating_adapter_abstract_method_wi
             @abstractmethod
             def my_method_without_return_type(self):
                 pass
+
+
+def test_should_not_raise_error_when_creating_adapter_abstract_method_with_return_type_and_no_parameters():
+
+    @Adapter
+    class MyAdapter(ABC):
+
+        @abstractmethod
+        def my_method(self) -> int:
+            pass
