@@ -32,8 +32,15 @@ def _validate_abstract_method(method: FunctionType):
 def _validate_abstract_method_parameter_type(signature: Signature):
     parameters = list(signature.parameters.items())
     for name, param in parameters[1:]:
-        if param.annotation is EMPTY:
-            raise AnnotationError()
+        _validate_abstract_method_parameter(param)
+
+
+def _validate_abstract_method_parameter(param):
+    annotation = param.annotation
+    if annotation is EMPTY:
+        raise AnnotationError()
+    if not isinstance(annotation, type):
+        raise AnnotationError()
 
 
 def _validate_abstract_method_return_type(signature: Signature):
