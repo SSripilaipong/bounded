@@ -52,7 +52,7 @@ def _validate_abstract_method_return_type(method_name: str, signature: Signature
     if return_annotation is _EMPTY:
         raise AnnotationError(_ERROR_NO_RETURN_ANNOTATION.format(method=method_name))
     if not isinstance(return_annotation, type):
-        raise AnnotationError(_ERROR_RETURN_ANNOTATION_NOT_TYPE)
+        raise AnnotationError(_ERROR_RETURN_ANNOTATION_NOT_TYPE.format(method=method_name))
 
 
 def _is_abstract_method(method: FunctionType) -> bool:
@@ -63,4 +63,4 @@ _ERROR_ABC_ONLY = "@Adapter only applies to abstract classes (inherited from ABC
 _ERROR_PARAM_ANNOTATION_NOT_TYPE = "The annotation of parameter '{param}' in method '{method}()' must be a type"
 _ERROR_PARAM_NO_ANNOTATION = "Parameter '{param}' in method '{method}()' must be annotated"
 _ERROR_NO_RETURN_ANNOTATION = "Abstract method '{method}()' must have return type annotation"
-_ERROR_RETURN_ANNOTATION_NOT_TYPE = "The return type of 'my_method()' must be a type"
+_ERROR_RETURN_ANNOTATION_NOT_TYPE = "The return type of '{method}()' must be a type"
