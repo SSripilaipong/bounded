@@ -15,15 +15,17 @@ def test_should_not_raise_AnnotationError_on_normal_method():
             pass
 
 
-def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_without_return_type():
-    with raises(AnnotationError):
+def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_my_method_without_return_type():
+    with raises(AnnotationError) as ex:
 
         @Adapter
         class MyAdapter(ABC):
 
             @abstractmethod
-            def my_method_without_return_type(self):
+            def my_method(self):
                 pass
+
+    assert str(ex.value) == "Abstract method 'my_method()' must have return type annotation"
 
 
 def test_should_not_raise_error_when_creating_adapter_abstract_method_with_return_type_and_no_parameters():
