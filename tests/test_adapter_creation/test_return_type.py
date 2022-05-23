@@ -34,3 +34,14 @@ def test_should_not_raise_error_when_creating_adapter_abstract_method_with_retur
         @abstractmethod
         def my_method(self) -> int:
             pass
+
+
+def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_with_return_type_that_is_not_type():
+    with raises(AnnotationError):
+
+        @Adapter
+        class MyAdapter(ABC):
+
+            @abstractmethod
+            def my_method(self) -> 123:
+                pass

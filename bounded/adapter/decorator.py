@@ -14,7 +14,10 @@ def Adapter(cls: Type):
 
 def _validate_abstract_method(method: FunctionType):
     if _is_abstract_method(method):
-        if not method.__annotations__:
+        return_annotation = method.__annotations__.get("return", None)
+        if not return_annotation:
+            raise AnnotationError()
+        if not isinstance(return_annotation, type):
             raise AnnotationError()
 
 
