@@ -42,7 +42,7 @@ def _validate_abstract_method_parameter_type(method_name: str, signature: Signat
 def _validate_abstract_method_parameter(method_name: str, param: Parameter):
     annotation = param.annotation
     if annotation is _EMPTY:
-        raise AnnotationError()
+        raise AnnotationError(_ERROR_PARAM_NO_ANNOTATION)
     if not isinstance(annotation, type):
         raise AnnotationError(_ERROR_PARAM_ANNOTATION_NOT_TYPE.format(param=param.name, method=method_name))
 
@@ -61,3 +61,4 @@ def _is_abstract_method(method: FunctionType) -> bool:
 
 _ERROR_ABC_ONLY = "@Adapter only applies to abstract classes (inherited from ABC)"
 _ERROR_PARAM_ANNOTATION_NOT_TYPE = "The annotation of parameter '{param}' in method '{method}()' must be a type"
+_ERROR_PARAM_NO_ANNOTATION = "Parameter 'a' in method 'my_method()' must be annotated"
