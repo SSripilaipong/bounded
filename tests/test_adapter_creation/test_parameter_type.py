@@ -17,8 +17,8 @@ def test_should_raise_AnnotationError_when_abstract_method_has_parameter_without
                 pass
 
 
-def test_should_raise_AnnotationError_when_abstract_method_parameter_with_annotation_that_is_not_a_type():
-    with raises(AnnotationError):
+def test_should_raise_AnnotationError_when_abstract_method_parameter_a_of_my_method_with_annotation_that_is_not_a_type():
+    with raises(AnnotationError) as ex:
 
         @Adapter
         class MyAdapter(ABC):
@@ -27,3 +27,4 @@ def test_should_raise_AnnotationError_when_abstract_method_parameter_with_annota
             def my_method(self, a: 1234) -> int:
                 pass
 
+    assert str(ex.value) == "The annotation of parameter 'a' in method 'my_method()' must be a type"
