@@ -1,4 +1,5 @@
 import inspect
+from abc import ABC
 from inspect import Signature
 from types import FunctionType
 from typing import Type, Iterable
@@ -10,6 +11,9 @@ EMPTY = Signature.empty
 
 
 def Adapter(cls: Type):
+    if not issubclass(cls, ABC):
+        raise TypeError(ERROR_ABC_ONLY)
+
     attrs = (getattr(cls, name) for name in dir(cls))
     methods: Iterable[FunctionType] = filter(callable, attrs)
 
@@ -53,3 +57,6 @@ def _validate_abstract_method_return_type(signature: Signature):
 
 def _is_abstract_method(method: FunctionType) -> bool:
     return getattr(method, "__isabstractmethod__", False)
+
+
+ERROR_ABC_ONLY = "@Adapter only applies to abstract classes (inherited from ABC)"
