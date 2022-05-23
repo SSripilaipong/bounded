@@ -51,8 +51,8 @@ def test_should_not_raise_error_when_creating_adapter_abstract_method_with_retur
             pass
 
 
-def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_with_return_type_that_is_not_type():
-    with raises(AnnotationError):
+def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_my_method_with_return_type_that_is_not_type():
+    with raises(AnnotationError) as ex:
 
         @Adapter
         class MyAdapter(ABC):
@@ -60,3 +60,5 @@ def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_with
             @abstractmethod
             def my_method(self) -> 123:
                 pass
+
+    assert str(ex.value) == "The return type of 'my_method()' must be a type"
