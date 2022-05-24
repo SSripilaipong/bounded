@@ -11,8 +11,7 @@ def test_should_raise_ComplexityError_when_method_my_method_have_optional_parame
             def my_method(self, a: str = None) -> int:
                 pass
 
-    assert str(ex.value) == "There should be only one way to call a usecase's method 'my_method()'; " \
-                            "no optional parameters"
+    assert str(ex.value) == "Usecase's method 'my_method()' should have no optional parameters"
 
 
 def test_should_raise_ComplexityError_when_method_another_method_have_optional_parameters():
@@ -22,5 +21,4 @@ def test_should_raise_ComplexityError_when_method_another_method_have_optional_p
             def another_method(self, a: str = None) -> int:
                 pass
 
-    assert str(ex.value) == "There should be only one way to call a usecase's method 'another_method()'; " \
-                            "no optional parameters"
+    assert str(ex.value) == "Usecase's method 'another_method()' should have no optional parameters"
