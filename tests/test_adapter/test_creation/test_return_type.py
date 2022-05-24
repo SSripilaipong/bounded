@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from pytest import raises
 
@@ -8,8 +8,7 @@ from bounded.exception import AnnotationError
 
 def test_should_not_raise_AnnotationError_on_normal_method():
 
-    @Adapter
-    class MyAdapter(ABC):
+    class MyAdapter(Adapter):
 
         def not_abstract(self, p) -> int:
             pass
@@ -18,8 +17,7 @@ def test_should_not_raise_AnnotationError_on_normal_method():
 def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_my_method_without_return_type():
     with raises(AnnotationError) as ex:
 
-        @Adapter
-        class MyAdapter(ABC):
+        class MyAdapter(Adapter):
 
             @abstractmethod
             def my_method(self):
@@ -31,8 +29,7 @@ def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_my_m
 def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_another_method_without_return_type():
     with raises(AnnotationError) as ex:
 
-        @Adapter
-        class MyAdapter(ABC):
+        class MyAdapter(Adapter):
 
             @abstractmethod
             def another_method(self):
@@ -43,8 +40,7 @@ def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_anot
 
 def test_should_not_raise_error_when_creating_adapter_abstract_method_with_return_type_and_no_parameters():
 
-    @Adapter
-    class MyAdapter(ABC):
+    class MyAdapter(Adapter):
 
         @abstractmethod
         def my_method(self) -> int:
@@ -54,8 +50,7 @@ def test_should_not_raise_error_when_creating_adapter_abstract_method_with_retur
 def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_my_method_with_return_type_that_is_not_type():
     with raises(AnnotationError) as ex:
 
-        @Adapter
-        class MyAdapter(ABC):
+        class MyAdapter(Adapter):
 
             @abstractmethod
             def my_method(self) -> 123:
@@ -67,8 +62,7 @@ def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_my_m
 def test_should_raise_AnnotationError_when_creating_adapter_abstract_method_another_method_with_return_type_that_is_not_type():
     with raises(AnnotationError) as ex:
 
-        @Adapter
-        class MyAdapter(ABC):
+        class MyAdapter(Adapter):
 
             @abstractmethod
             def another_method(self) -> 123:

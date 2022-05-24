@@ -1,2 +1,1 @@
-from .decorator import Adapter
-from .base import AdapterBase
+from .base import Adapter

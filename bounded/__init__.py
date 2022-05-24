@@ -1,1 +1,1 @@
-from .adapter import Adapter, AdapterBase
+from .adapter import Adapter

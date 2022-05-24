@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 
 from pytest import raises
 
@@ -9,8 +9,7 @@ from bounded.exception import AnnotationError
 def test_should_raise_AnnotationError_when_abstract_method_my_method_has_parameter_a_without_type_annotation():
     with raises(AnnotationError) as ex:
 
-        @Adapter
-        class MyAdapter(ABC):
+        class MyAdapter(Adapter):
 
             @abstractmethod
             def my_method(self, a) -> int:
@@ -22,8 +21,7 @@ def test_should_raise_AnnotationError_when_abstract_method_my_method_has_paramet
 def test_should_raise_AnnotationError_when_abstract_method_another_method_has_parameter_b_without_type_annotation():
     with raises(AnnotationError) as ex:
 
-        @Adapter
-        class MyAdapter(ABC):
+        class MyAdapter(Adapter):
 
             @abstractmethod
             def another_method(self, b) -> int:
@@ -35,8 +33,7 @@ def test_should_raise_AnnotationError_when_abstract_method_another_method_has_pa
 def test_should_raise_AnnotationError_when_abstract_method_parameter_a_of_my_method_with_annotation_that_is_not_a_type():
     with raises(AnnotationError) as ex:
 
-        @Adapter
-        class MyAdapter(ABC):
+        class MyAdapter(Adapter):
 
             @abstractmethod
             def my_method(self, a: 1234) -> int:
@@ -48,8 +45,7 @@ def test_should_raise_AnnotationError_when_abstract_method_parameter_a_of_my_met
 def test_should_raise_AnnotationError_when_abstract_method_parameter_b_of_anothor_method_with_annotation_that_is_not_a_type():
     with raises(AnnotationError) as ex:
 
-        @Adapter
-        class MyAdapter(ABC):
+        class MyAdapter(Adapter):
 
             @abstractmethod
             def another_method(self, b: 1234) -> int:

@@ -1,27 +1,35 @@
-import inspect
 from abc import ABCMeta
 from typing import Tuple, Dict, Any
 
-from bounded.exception import ImplementationError
+from bounded.adapter.validate import validate_adapter
+from bounded.adapter.validate.implementation import validate_implementation
 
 
 class AdapterMeta(ABCMeta):
     def __new__(cls, name: str, bases: Tuple[type, ...], dct: Dict[str, Any]):
         result = super().__new__(cls, name, bases, dct)
-        if bases and AdapterBase not in bases:
-            abstract_methods = inspect.getmembers(result, predicate=_is_abstract_method)
-            if abstract_methods:
-                raise ImplementationError(_ERROR_IMPLEMENTATION_MISSING_ABSTRACT_CLASS)
+
+        is_implementation = _is_implementation(bases)
+        is_adapter = not _is_adapter_base_itself(name) and not is_implementation
+
+        if is_adapter:
+            validate_adapter(result)
+        elif is_implementation:
+            validate_implementation(result)
         return result
 
 
-class AdapterBase(metaclass=AdapterMeta):
+def _is_implementation(bases):
+    return bases and Adapter not in bases
+
+
+def _is_adapter_base_itself(name: str) -> bool:
+    try:
+        has_adapter_base = bool(Adapter)
+    except NameError:
+        has_adapter_base = False
+    return not has_adapter_base and name == "AdapterBase"
+
+
+class Adapter(metaclass=AdapterMeta):
     pass
-
-
-def _is_abstract_method(x):
-    return inspect.isfunction(x) and getattr(x, "__isabstractmethod__", False)
-
-
-_ERROR_IMPLEMENTATION_MISSING_ABSTRACT_CLASS = "Adapter's implementation 'MyImpl' must implement abstract method " \
-                                               "'my_method()'"

@@ -1,8 +1,7 @@
 import inspect
-from abc import ABC
 from inspect import Signature, Parameter
 from types import FunctionType
-from typing import Type, Iterable, Tuple
+from typing import Iterable, Tuple
 
 from bounded.exception import AnnotationError
 
@@ -10,18 +9,7 @@ from bounded.exception import AnnotationError
 _EMPTY = Signature.empty
 
 
-def Adapter(cls: Type):
-    _validate_adapter(cls)
-
-    class AbstractAdapter:
-        pass
-
-    return AbstractAdapter
-
-
-def _validate_adapter(cls):
-    if not issubclass(cls, ABC):
-        raise TypeError(_ERROR_ABC_ONLY)
+def validate_adapter(cls):
     attrs = ((name, getattr(cls, name)) for name in dir(cls))
     methods: Iterable[Tuple[str, FunctionType]] = filter(lambda attr: callable(attr[1]), attrs)
     for name, method in methods:
@@ -66,7 +54,6 @@ def _is_abstract_method(method: FunctionType) -> bool:
     return getattr(method, "__isabstractmethod__", False)
 
 
-_ERROR_ABC_ONLY = "@Adapter only applies to abstract classes (inherited from ABC)"
 _ERROR_PARAM_ANNOTATION_NOT_TYPE = "The annotation of parameter '{param}' in method '{method}()' must be a type"
 _ERROR_PARAM_NO_ANNOTATION = "Parameter '{param}' in method '{method}()' must be annotated"
 _ERROR_NO_RETURN_ANNOTATION = "Abstract method '{method}()' must have return type annotation"

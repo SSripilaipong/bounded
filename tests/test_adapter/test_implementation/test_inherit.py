@@ -1,13 +1,12 @@
-from abc import abstractmethod, ABC
+from abc import abstractmethod
 from pytest import raises
 
-from bounded import Adapter, AdapterBase
+from bounded import Adapter
 from bounded.exception import ImplementationError
 
 
 def test_should_inherit_from_abstract_adapter():
-    @Adapter
-    class AbstractAdapter(ABC):
+    class AbstractAdapter(Adapter):
         pass
 
     class ImplementationAdapter(AbstractAdapter):
@@ -15,7 +14,7 @@ def test_should_inherit_from_abstract_adapter():
 
 
 def test_should_raise_ImplementationError_when_abstract_method_my_method_is_missing_from_MyImpl():
-    class AbstractAdapter(AdapterBase):
+    class AbstractAdapter(Adapter):
         @abstractmethod
         def my_method(self) -> int:
             pass
