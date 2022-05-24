@@ -23,12 +23,14 @@ def _validate_method(name: str, signature: Signature):
     _validate_method_parameter_type(signature)
 
 
-def _validate_method_parameter_type(signature):
-    if signature.parameters:
-        raise AnnotationError(_ERROR_METHOD_PARAMETER_MUST_BE_ANNOTATED)
+def _validate_method_parameter_type(signature: Signature):
+    params = list(signature.parameters.items())[1:]
+    for name, param in params:
+        if param.annotation is _EMPTY:
+            raise AnnotationError(_ERROR_METHOD_PARAMETER_MUST_BE_ANNOTATED)
 
 
-def _validate_method_return_type(name, signature):
+def _validate_method_return_type(name: str, signature: Signature):
     if signature.return_annotation is _EMPTY:
         raise AnnotationError(_ERROR_METHOD_NO_RETURN_TYPE.format(method=name))
     if not isinstance(signature.return_annotation, type):
