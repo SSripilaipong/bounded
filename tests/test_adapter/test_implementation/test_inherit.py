@@ -119,3 +119,19 @@ def test_should_raise_ImplementationError_when_implemented_method_my_method_has_
                 pass
 
     assert str(ex.value) == "Implemented method 'my_method()' must have same parameters as the abstract adapter"
+
+
+def test_should_raise_ImplementationError_when_implemented_method_another_method_has_different_parameter_set():
+
+    class AbstractAdapter(Adapter):
+        @abstractmethod
+        def another_method(self, a: int, b: str = "") -> str:
+            pass
+
+    with raises(ImplementationError) as ex:
+
+        class MyImpl(AbstractAdapter):
+            def another_method(self, x: int, y, z: str = "", a="") -> str:
+                pass
+
+    assert str(ex.value) == "Implemented method 'another_method()' must have same parameters as the abstract adapter"

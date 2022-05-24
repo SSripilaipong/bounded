@@ -26,13 +26,21 @@ def _validate_implemented_method_signature(base: Type, cls: Type):
     for method_name, method in required_abstract_method_names:
         abstract = inspect.signature(method)
         implementation = inspect.signature(getattr(cls, method_name))
-        if implementation.return_annotation is _EMPTY:
-            raise AnnotationError(_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_RETURN_TYPE.format(method=method_name))
-        if implementation.return_annotation is not abstract.return_annotation:
-            raise AnnotationError(_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_RETURN_TYPE.format(method=method_name))
 
-        if abstract.parameters != implementation.parameters:
-            raise ImplementationError("Implemented method 'my_method()' must have same parameters as the abstract adapter")
+        _validate_implementation_return_type(abstract, implementation, method_name)
+        _validate_implementation_parameters(abstract, implementation, method_name)
+
+
+def _validate_implementation_parameters(abstract: Signature, implementation: Signature, method_name: str):
+    if abstract.parameters != implementation.parameters:
+        raise ImplementationError(_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_PARAMETERS.format(method=method_name))
+
+
+def _validate_implementation_return_type(abstract: Signature, implementation: Signature, method_name: str):
+    if implementation.return_annotation is _EMPTY:
+        raise AnnotationError(_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_RETURN_TYPE.format(method=method_name))
+    if implementation.return_annotation is not abstract.return_annotation:
+        raise AnnotationError(_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_RETURN_TYPE.format(method=method_name))
 
 
 def _validate_no_abstract_method_left(cls: Type, class_name: str):
@@ -51,3 +59,5 @@ _ERROR_NOT_IMPLEMENT_ABSTRACT_METHOD = "Adapter's implementation '{cls}' must im
 _ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_RETURN_TYPE = "Implemented method '{method}()' must have same return type " \
                                                 "as the abstract adapter"
 _ERROR_IMPLEMENT_MULTIPLE_ADAPTERS = "Cannot implement multiple adapters in the same class"
+_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_PARAMETERS = "Implemented method '{method}()' must have same parameters " \
+                                                      "as the abstract adapter"
