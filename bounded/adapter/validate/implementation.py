@@ -31,6 +31,9 @@ def _validate_implemented_method_signature(base: Type, cls: Type):
         if implementation.return_annotation is not abstract.return_annotation:
             raise AnnotationError(_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_RETURN_TYPE.format(method=method_name))
 
+        if abstract.parameters != implementation.parameters:
+            raise ImplementationError("Implemented method 'my_method()' must have same parameters as the abstract adapter")
+
 
 def _validate_no_abstract_method_left(cls: Type, class_name: str):
     abstract_methods = inspect.getmembers(cls, predicate=_is_abstract_method)

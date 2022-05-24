@@ -103,3 +103,19 @@ def test_should_raise_AnnotationError_when_implemented_method_my_method_with_dif
                 pass
 
     assert str(ex.value) == "Implemented method 'my_method()' must have same return type as the abstract adapter"
+
+
+def test_should_raise_ImplementationError_when_implemented_method_my_method_has_different_parameter_set():
+
+    class AbstractAdapter(Adapter):
+        @abstractmethod
+        def my_method(self, a: int, b: str = "") -> str:
+            pass
+
+    with raises(ImplementationError) as ex:
+
+        class MyImpl(AbstractAdapter):
+            def my_method(self, x: int, y, z: str = "", a="") -> str:
+                pass
+
+    assert str(ex.value) == "Implemented method 'my_method()' must have same parameters as the abstract adapter"
