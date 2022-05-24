@@ -20,14 +20,14 @@ class UsecaseMeta(type):
 
 def _validate_method(name: str, signature: Signature):
     _validate_method_return_type(name, signature)
-    _validate_method_parameter_type(signature)
+    _validate_method_parameter_type(name, signature)
 
 
-def _validate_method_parameter_type(signature: Signature):
+def _validate_method_parameter_type(method_name: str, signature: Signature):
     params = list(signature.parameters.items())[1:]
     for name, param in params:
         if param.annotation is _EMPTY:
-            raise AnnotationError(_ERROR_METHOD_PARAMETER_MUST_BE_ANNOTATED)
+            raise AnnotationError(_ERROR_METHOD_PARAMETER_MUST_BE_ANNOTATED.format(method=method_name))
 
 
 def _validate_method_return_type(name: str, signature: Signature):
@@ -40,7 +40,7 @@ def _validate_method_return_type(name: str, signature: Signature):
 _EMPTY = Signature.empty
 _ERROR_METHOD_NO_RETURN_TYPE = "Usecase's public method '{method}()' must have return type"
 _ERROR_METHOD_RETURN_TYPE_MUST_BE_A_TYPE = "Return type of '{method}()' must be a type"
-_ERROR_METHOD_PARAMETER_MUST_BE_ANNOTATED = "Usecase's public method 'my_method()' must have all parameters annotated"
+_ERROR_METHOD_PARAMETER_MUST_BE_ANNOTATED = "Usecase's public method '{method}()' must have all parameters annotated"
 
 
 class Usecase(metaclass=UsecaseMeta):
