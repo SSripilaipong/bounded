@@ -12,3 +12,13 @@ def test_should_raise_AnnotationError_when_define_method_my_method_without_retur
                 pass
 
     assert str(ex.value) == "Usecase's public method 'my_method()' must have return type"
+
+
+def test_should_raise_AnnotationError_when_define_method_another_method_without_return_type():
+    with raises(AnnotationError) as ex:
+
+        class MyUsecase(Usecase):
+            def another_method(self):
+                pass
+
+    assert str(ex.value) == "Usecase's public method 'another_method()' must have return type"
