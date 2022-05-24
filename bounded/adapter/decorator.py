@@ -11,12 +11,19 @@ _EMPTY = Signature.empty
 
 
 def Adapter(cls: Type):
+    _validate_adapter(cls)
+
+    class AbstractAdapter:
+        pass
+
+    return AbstractAdapter
+
+
+def _validate_adapter(cls):
     if not issubclass(cls, ABC):
         raise TypeError(_ERROR_ABC_ONLY)
-
     attrs = ((name, getattr(cls, name)) for name in dir(cls))
     methods: Iterable[Tuple[str, FunctionType]] = filter(lambda attr: callable(attr[1]), attrs)
-
     for name, method in methods:
         _validate_method(name, method)
 
