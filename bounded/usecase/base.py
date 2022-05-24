@@ -31,8 +31,7 @@ def _validate_method_parameter_type(method_name: str, signature: Signature):
         if not isinstance(param.annotation, type):
             raise AnnotationError(_ERROR_METHOD_PARAMETER_ANNOTATION_MUST_BE_A_TYPE.format(method=method_name))
         if param.default is not _EMPTY:
-            raise ComplexityError("There should be only one way to call a usecase's method 'my_method()'; "
-                                  "no optional parameters")
+            raise ComplexityError(_ERROR_METHOD_PARAMETER_SHOULD_NOT_BE_OPTIONAL.format(method=method_name))
 
 
 def _validate_method_return_type(name: str, signature: Signature):
@@ -48,6 +47,8 @@ _ERROR_METHOD_RETURN_TYPE_MUST_BE_A_TYPE = "Return type of '{method}()' must be 
 _ERROR_METHOD_PARAMETER_MUST_BE_ANNOTATED = "Usecase's public method '{method}()' must have all parameters annotated"
 _ERROR_METHOD_PARAMETER_ANNOTATION_MUST_BE_A_TYPE = "Parameters of usecase's public method '{method}()' " \
                                                     "must be annotated with types"
+_ERROR_METHOD_PARAMETER_SHOULD_NOT_BE_OPTIONAL = "There should be only one way to call a usecase's method " \
+                                                 "'{method}()'; no optional parameters"
 
 
 class Usecase(metaclass=UsecaseMeta):
