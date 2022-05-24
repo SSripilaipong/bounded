@@ -22,12 +22,12 @@ def _validate_method(name: str, signature: Signature):
     if signature.return_annotation is _EMPTY:
         raise AnnotationError(_ERROR_METHOD_NO_RETURN_TYPE.format(method=name))
     if not isinstance(signature.return_annotation, type):
-        raise AnnotationError(_ERROR_METHOD_RETURN_TYPE_MUST_BE_A_TYPE)
+        raise AnnotationError(_ERROR_METHOD_RETURN_TYPE_MUST_BE_A_TYPE.format(method=name))
 
 
 _EMPTY = Signature.empty
 _ERROR_METHOD_NO_RETURN_TYPE = "Usecase's public method '{method}()' must have return type"
-_ERROR_METHOD_RETURN_TYPE_MUST_BE_A_TYPE = "Return type of 'my_method()' must be a type"
+_ERROR_METHOD_RETURN_TYPE_MUST_BE_A_TYPE = "Return type of '{method}()' must be a type"
 
 
 class Usecase(metaclass=UsecaseMeta):
