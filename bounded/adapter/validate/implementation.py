@@ -9,9 +9,9 @@ def validate_implementation(result):
         raise ImplementationError(_ERROR_IMPLEMENTATION_MISSING_ABSTRACT_CLASS)
 
 
-_ERROR_IMPLEMENTATION_MISSING_ABSTRACT_CLASS = "Adapter's implementation 'MyImpl' must implement abstract method " \
-                                               "'my_method()'"
-
-
 def _is_abstract_method(x) -> bool:
     return inspect.isfunction(x) and getattr(x, "__isabstractmethod__", False)
+
+
+_ERROR_IMPLEMENTATION_MISSING_ABSTRACT_CLASS = "Adapter's implementation 'MyImpl' must implement abstract method " \
+                                               "'my_method()'"
