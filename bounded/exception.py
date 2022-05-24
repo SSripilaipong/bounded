@@ -4,3 +4,7 @@ class AnnotationError(Exception):
 
 class ImplementationError(Exception):
     pass
+
+
+class ComplexityError(Exception):
+    pass

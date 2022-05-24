@@ -1,8 +1,8 @@
 import inspect
-from inspect import Signature
-from typing import Tuple, Dict, Any
+from inspect import Signature, Parameter
+from typing import Tuple, Dict, Any, List
 
-from bounded.exception import AnnotationError
+from bounded.exception import AnnotationError, ComplexityError
 
 
 class UsecaseMeta(type):
@@ -24,12 +24,15 @@ def _validate_method(name: str, signature: Signature):
 
 
 def _validate_method_parameter_type(method_name: str, signature: Signature):
-    params = list(signature.parameters.items())[1:]
+    params: List[Tuple[str, Parameter]] = list(signature.parameters.items())[1:]
     for name, param in params:
         if param.annotation is _EMPTY:
             raise AnnotationError(_ERROR_METHOD_PARAMETER_MUST_BE_ANNOTATED.format(method=method_name))
         if not isinstance(param.annotation, type):
             raise AnnotationError(_ERROR_METHOD_PARAMETER_ANNOTATION_MUST_BE_A_TYPE.format(method=method_name))
+        if param.default is not _EMPTY:
+            raise ComplexityError("There should be only one way to call a usecase's method 'my_method()'; "
+                                  "no optional parameters")
 
 
 def _validate_method_return_type(name: str, signature: Signature):
