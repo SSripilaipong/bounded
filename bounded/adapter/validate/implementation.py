@@ -24,9 +24,12 @@ def _validate_base(bases):
 def _validate_implemented_method_signature(base: Type, cls: Type):
     required_abstract_method_names = inspect.getmembers(base, predicate=_is_abstract_method)
     for method_name, method in required_abstract_method_names:
-        signature = inspect.signature(getattr(cls, method_name))
-        if signature.return_annotation is _EMPTY:
-            raise AnnotationError(_ERROR_IMPLEMENTED_METHOD_MISSING_RETURN_TYPE.format(method=method_name))
+        abstract = inspect.signature(method)
+        implementation = inspect.signature(getattr(cls, method_name))
+        if implementation.return_annotation is _EMPTY:
+            raise AnnotationError(_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_RETURN_TYPE.format(method=method_name))
+        if implementation.return_annotation is not abstract.return_annotation:
+            raise AnnotationError(_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_RETURN_TYPE.format(method=method_name))
 
 
 def _validate_no_abstract_method_left(cls: Type, class_name: str):
@@ -42,6 +45,6 @@ def _is_abstract_method(x) -> bool:
 
 _ERROR_NOT_IMPLEMENT_ABSTRACT_METHOD = "Adapter's implementation '{cls}' must implement abstract method " \
                                        "'{method}()'"
-_ERROR_IMPLEMENTED_METHOD_MISSING_RETURN_TYPE = "Implemented method '{method}()' must have same return type " \
+_ERROR_IMPLEMENTED_METHOD_WITH_DIFFERENT_RETURN_TYPE = "Implemented method '{method}()' must have same return type " \
                                                 "as the abstract adapter"
 _ERROR_IMPLEMENT_MULTIPLE_ADAPTERS = "Cannot implement multiple adapters in the same class"

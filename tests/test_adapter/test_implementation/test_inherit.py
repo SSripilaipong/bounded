@@ -87,3 +87,19 @@ def test_should_raise_ImplementationError_when_implementing_multiple_adapters():
             pass
 
     assert str(ex.value) == "Cannot implement multiple adapters in the same class"
+
+
+def test_should_raise_AnnotationError_when_implemented_method_my_method_with_different_return_type():
+
+    class AbstractAdapter(Adapter):
+        @abstractmethod
+        def my_method(self) -> int:
+            pass
+
+    with raises(AnnotationError) as ex:
+
+        class MyImpl(AbstractAdapter):
+            def my_method(self) -> str:
+                pass
+
+    assert str(ex.value) == "Implemented method 'my_method()' must have same return type as the abstract adapter"
