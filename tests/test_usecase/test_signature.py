@@ -1,7 +1,7 @@
 from pytest import raises
 
+from bounded import Usecase
 from bounded.exception import AnnotationError
-from bounded.usecase.base import Usecase
 
 
 def test_should_raise_AnnotationError_when_define_method_my_method_without_return_type():
