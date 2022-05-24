@@ -9,9 +9,16 @@ _EMPTY = Signature.empty
 
 
 def validate_implementation(name: str, bases: Tuple[type, ...], cls: Type):
-    base = bases[0]
+    base = _validate_base(bases)
     _validate_no_abstract_method_left(cls, name)
     _validate_implemented_method_signature(base, cls)
+
+
+def _validate_base(bases):
+    if len(bases) != 1:
+        raise ImplementationError(_ERROR_IMPLEMENT_MULTIPLE_ADAPTERS)
+    base = bases[0]
+    return base
 
 
 def _validate_implemented_method_signature(base: Type, cls: Type):
@@ -37,3 +44,4 @@ _ERROR_NOT_IMPLEMENT_ABSTRACT_METHOD = "Adapter's implementation '{cls}' must im
                                        "'{method}()'"
 _ERROR_IMPLEMENTED_METHOD_MISSING_RETURN_TYPE = "Implemented method '{method}()' must have same return type " \
                                                 "as the abstract adapter"
+_ERROR_IMPLEMENT_MULTIPLE_ADAPTERS = "Cannot implement multiple adapters in the same class"
