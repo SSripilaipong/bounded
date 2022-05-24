@@ -55,3 +55,19 @@ def test_should_raise_AnnotationError_when_implemented_method_my_method_has_no_r
                 pass
 
     assert str(ex.value) == "Implemented method 'my_method()' must have same return type as the abstract adapter"
+
+
+def test_should_raise_AnnotationError_when_implemented_method_another_method_has_no_return_type():
+
+    class AbstractAdapter(Adapter):
+        @abstractmethod
+        def another_method(self) -> int:
+            pass
+
+    with raises(AnnotationError) as ex:
+
+        class MyImpl(AbstractAdapter):
+            def another_method(self):
+                pass
+
+    assert str(ex.value) == "Implemented method 'another_method()' must have same return type as the abstract adapter"
