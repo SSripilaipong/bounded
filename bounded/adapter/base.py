@@ -15,7 +15,7 @@ class AdapterMeta(ABCMeta):
         if is_adapter:
             validate_adapter(result)
         elif is_implementation:
-            validate_implementation(name, result)
+            validate_implementation(name, bases, result)
         return result
 
 
