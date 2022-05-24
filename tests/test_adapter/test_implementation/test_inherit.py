@@ -25,3 +25,17 @@ def test_should_raise_ImplementationError_when_abstract_method_my_method_is_miss
             pass
 
     assert str(ex.value) == "Adapter's implementation 'MyImpl' must implement abstract method 'my_method()'"
+
+
+def test_should_raise_ImplementationError_when_abstract_method_another_method_is_missing_from_AnotherImpl():
+    class AbstractAdapter(Adapter):
+        @abstractmethod
+        def another_method(self) -> int:
+            pass
+
+    with raises(ImplementationError) as ex:
+
+        class AnotherImpl(AbstractAdapter):
+            pass
+
+    assert str(ex.value) == "Adapter's implementation 'AnotherImpl' must implement abstract method 'another_method()'"
